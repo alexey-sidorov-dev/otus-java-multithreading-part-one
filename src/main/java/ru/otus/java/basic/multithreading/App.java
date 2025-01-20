@@ -26,7 +26,7 @@ public class App {
   static long fillArraySingleThread(double[] array) {
     long start = System.nanoTime();
     for (int i = 0; i < array.length; i++) {
-      array[i] = 1.14 * Math.cos(i) * Math.sin(i * 0.2) * Math.cos(i / 1.2);
+      calculateArrayElement(array, i);
     }
 
     return System.nanoTime() - start;
@@ -39,29 +39,29 @@ public class App {
    */
   static long fillArrayMultiThread(double[] array) throws InterruptedException {
     long start = System.nanoTime();
-    int bound = (int) Math.floor((double) array.length / 4);
+    int bound = array.length / 4;
 
     Thread t1 = new Thread(() -> {
       for (int i = 0; i < bound; i++) {
-        array[i] = 1.14 * Math.cos(i) * Math.sin(i * 0.2) * Math.cos(i / 1.2);
+        calculateArrayElement(array, i);
       }
     });
 
     Thread t2 = new Thread(() -> {
       for (int i = bound; i < bound * 2; i++) {
-        array[i] = 1.14 * Math.cos(i) * Math.sin(i * 0.2) * Math.cos(i / 1.2);
+        calculateArrayElement(array, i);
       }
     });
 
     Thread t3 = new Thread(() -> {
       for (int i = bound * 2; i < bound * 3; i++) {
-        array[i] = 1.14 * Math.cos(i) * Math.sin(i * 0.2) * Math.cos(i / 1.2);
+        calculateArrayElement(array, i);
       }
     });
 
     Thread t4 = new Thread(() -> {
       for (int i = bound * 3; i < array.length; i++) {
-        array[i] = 1.14 * Math.cos(i) * Math.sin(i * 0.2) * Math.cos(i / 1.2);
+        calculateArrayElement(array, i);
       }
     });
 
@@ -77,4 +77,13 @@ public class App {
     return System.nanoTime() - start;
   }
 
+  /**
+   * Рассчитать элемент массива
+   *
+   * @param array Заполняемый массив
+   * @param index Рассчитываемый элемент массива
+   */
+  static void calculateArrayElement(double[] array, int index) {
+    array[index] = 1.14 * Math.cos(index) * Math.sin(index * 0.2) * Math.cos(index / 1.2);
+  }
 }
